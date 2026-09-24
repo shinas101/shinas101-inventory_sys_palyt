@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Palyt - Kitchen Stock and Menu</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <h1>Palyt Kitchen</h1>
+        <span class="tagline">Stock Management &amp; Live Menu</span>
+      </div>
+      <div class="header-actions">
+        <button id="btn-reset" class="btn btn-secondary">Reset Baseline</button>
+        <button id="btn-add-ingredient" class="btn btn-primary">+ Add Ingredient</button>
+      </div>
+    </div>
+  </header>
+
+  <div id="order-alert" class="order-alert hidden">
+    <span id="order-alert-msg"></span>
+    <button id="btn-close-alert">&times;</button>
+  </div>
+
+  <main class="layout">
+    <!-- Stock Panel -->
+    <section class="card stock-panel">
+      <div class="panel-head">
+        <h2>Kitchen Stock</h2>
+        <input type="text" id="search-input" placeholder="Search ingredient..." autocomplete="off">
+      </div>
+      
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Ingredient</th>
+              <th>Current Stock</th>
+              <th>Par Level</th>
+              <th>Status</th>
+              <th>Used In</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="stock-tbody">
+            <tr><td colspan="6" class="muted">Loading stock...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Menu Panel -->
+    <section class="card menu-panel">
+      <div class="panel-head">
+        <h2>Live Menu</h2>
+        <div class="legend">
+          <span class="badge badge-ok">Available</span>
+          <span class="badge badge-bad">Unavailable</span>
+        </div>
+      </div>
+
+      <div id="menu-grid" class="menu-grid">
+        <div class="muted">Loading menu...</div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Add / Edit Modal -->
+  <div id="ingredient-modal" class="modal-backdrop hidden">
+    <div class="modal">
+      <div class="modal-head">
+        <h3 id="modal-title">Add Ingredient</h3>
+        <button id="btn-modal-close" class="close-btn">&times;</button>
+      </div>
+      <form id="ingredient-form">
+        <div class="form-group">
+          <label for="ing-name">Name</label>
+          <input type="text" id="ing-name" required placeholder="e.g. Paneer">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="ing-qty">Quantity</label>
+            <input type="number" id="ing-qty" required min="0" step="any" placeholder="100">
+          </div>
+          <div class="form-group">
+            <label for="ing-unit">Unit</label>
+            <select id="ing-unit" required>
+              <option value="g">g</option>
+              <option value="kg">kg</option>
+              <option value="ml">ml</option>
+              <option value="l">L</option>
+              <option value="pcs">pcs</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="ing-par">Par Level (Buffer threshold)</label>
+          <input type="number" id="ing-par" required min="0" step="any" placeholder="50">
+        </div>
+        <div class="modal-actions">
+          <button type="button" id="btn-modal-cancel" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete Warning Modal -->
+  <div id="delete-modal" class="modal-backdrop hidden">
+    <div class="modal">
+      <div class="modal-head">
+        <h3>Delete Ingredient</h3>
+        <button id="btn-delete-close" class="close-btn">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete <strong id="delete-target-name"></strong>?</p>
+        <div id="delete-impact-msg" class="impact-warning hidden">
+          <p><strong>Warning:</strong> This ingredient is used in:</p>
+          <ul id="delete-impact-dishes"></ul>
+          <p class="small">Deleting it will make these dishes unavailable.</p>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button type="button" id="btn-delete-cancel" class="btn btn-secondary">Cancel</button>
+        <button type="button" id="btn-delete-confirm" class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
